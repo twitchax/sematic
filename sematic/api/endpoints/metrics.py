@@ -161,29 +161,32 @@ def save_event_metrics(
     """
     Compute and store System Metrics associated with a particular metric event.
     """
-    if len(runs) == 0:
-        return
+    try:
+        if len(runs) == 0:
+            return
 
-    metric_points: List[MetricPoint] = []
+        metric_points: List[MetricPoint] = []
 
-    for metric_class in _METRICS[event]:
-        metric = metric_class()
-        for run in runs:
-            metric_point = metric.make_metric_point(run, user)
+        for metric_class in _METRICS[event]:
+            metric = metric_class()
+            for run in runs:
+                metric_point = metric.make_metric_point(run, user)
 
-            if metric_point is None:
-                continue
+                if metric_point is None:
+                    continue
 
-            logging.info(
-                "Generated metric %s for run %s with value %s",
-                metric.get_full_name(),
-                run.id,
-                metric_point.value,
-            )
+                logging.info(
+                    "Generated metric %s for run %s with value %s",
+                    metric.get_full_name(),
+                    run.id,
+                    metric_point.value,
+                )
 
-            metric_points.append(metric_point)
+                metric_points.append(metric_point)
 
-    _store_metrics(metric_points)
+        _store_metrics(metric_points)
+    except Exception as e:
+        logger.exception("Error saving event metrics: %s", e)
 
 
 def _store_metrics(metric_points: List[MetricPoint]):

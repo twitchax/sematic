@@ -5,6 +5,8 @@ Lines for version numbers should always be formatted as
 with nothing else on the line.
 -->
 * HEAD
+* [0.29.1](https://pypi.org/project/sematic/0.29.1/)
+    * [bugfix] Patch so failures in metric generation are not fatal to requests
 * [0.29.0](https://pypi.org/project/sematic/0.29.0/)
     * [feature] Garbage collection CRON job
     * [feature] Enable customization of local storage path
