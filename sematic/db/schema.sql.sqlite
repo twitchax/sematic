@@ -130,6 +130,27 @@ CREATE TABLE metric_values (
 );
 CREATE INDEX metric_values_id_time_idx ON metric_values(metric_id, metric_time DESC);
 CREATE INDEX metric_values_time_idx ON metric_values(metric_time DESC);
+CREATE TABLE organizations (
+    id character(32) NOT NULL,
+    name TEXT NOT NULL,
+    namespace TEXT,
+    created_at TIMESTAMP WITH time zone NOT NULL,
+    updated_at TIMESTAMP WITH time zone NOT NULL,
+
+    PRIMARY KEY (id)
+);
+CREATE TABLE organizations_users (
+    organization_id character(32) NOT NULL,
+    user_id character(32) NOT NULL,
+    admin BOOLEAN NOT NULL,
+    created_at TIMESTAMP WITH time zone NOT NULL,
+    updated_at TIMESTAMP WITH time zone NOT NULL,
+
+    PRIMARY KEY (organization_id, user_id),
+
+    FOREIGN KEY(organization_id) REFERENCES organizations (id),
+    FOREIGN KEY(user_id) REFERENCES users (id)
+);
 -- schema migrations
 INSERT INTO "schema_migrations" (version) VALUES
   ('20220424062956'),
@@ -174,4 +195,5 @@ INSERT INTO "schema_migrations" (version) VALUES
   ('20230403153220'),
   ('20230419080554'),
   ('20230428225443'),
-  ('20230526141354');
+  ('20230526141354'),
+  ('20230615104836');

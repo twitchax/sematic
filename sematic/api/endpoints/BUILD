@@ -230,6 +230,19 @@ sematic_py_lib(
 )
 
 sematic_py_lib(
+    name = "organizations",
+    srcs = ["organizations.py"],
+    pip_deps = ["flask"],
+    deps = [
+        "//sematic/api:app",
+        "//sematic/api/endpoints:auth",
+        "//sematic/db:queries",
+        "//sematic/db/models:organization",
+        "//sematic/db/models:user",
+    ],
+)
+
+sematic_py_lib(
     name = "users",
     srcs = ["users.py"],
     pip_deps = ["flask"],
@@ -237,6 +250,21 @@ sematic_py_lib(
         "//sematic/api:app",
         "//sematic/api/endpoints:auth",
         "//sematic/db:queries",
+        "//sematic/db/models:user",
+    ],
+)
+
+sematic_py_lib(
+    name = "organizations_users",
+    srcs = ["organizations_users.py"],
+    pip_deps = ["flask"],
+    deps = [
+        "//sematic/api:app",
+        "//sematic/api/endpoints:auth",
+        "//sematic/api/endpoints:request_parameters",
+        "//sematic/db:db",
+        "//sematic/db:queries",
+        "//sematic/db/models:organization_user",
         "//sematic/db/models:user",
     ],
 )
