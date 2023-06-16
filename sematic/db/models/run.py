@@ -4,10 +4,10 @@ import importlib
 import json
 import re
 from dataclasses import asdict
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 # Third-party
-from sqlalchemy import Column, ForeignKey, types
+from sqlalchemy import Column, ForeignKey, Index, types
 from sqlalchemy.orm import relationship, validates
 
 # Sematic
@@ -100,7 +100,7 @@ class Run(HasUserMixin, Base, JSONEncodableMixin):
     )
     name: str = Column(types.String(), nullable=True)
     function_path: str = Column(
-        types.String(), nullable=False, info={"alias": "calculator_path"}
+        types.String(), nullable=False, info={"alias": "calculator_path"}, index=True
     )
     parent_id: Optional[str] = Column(types.String(), nullable=True)
     root_id: str = Column(types.String(), ForeignKey("runs.id"), nullable=False)
@@ -112,6 +112,11 @@ class Run(HasUserMixin, Base, JSONEncodableMixin):
         info={JSON_KEY: True, CONTAIN_FILTER_KEY: json_string_list_contains},
     )
     source_code: str = Column(types.String(), nullable=False)
+
+    # WARNING: deprecated column, do not remove until Python-packaged SQLite supports
+    # column removal across all supported Python versions
+    exception: str = Column(types.String(), nullable=True)  # DEPRECATED
+
     nested_future_id: Optional[str] = Column(types.String(), nullable=True)
     exception_metadata_json: Optional[Dict[str, Union[str, List[str]]]] = Column(
         types.JSON(), nullable=True
@@ -119,6 +124,13 @@ class Run(HasUserMixin, Base, JSONEncodableMixin):
     external_exception_metadata_json: Optional[
         Dict[str, Union[str, List[str]]]
     ] = Column(types.JSON(), nullable=True)
+
+    # WARNING: deprecated column, do not remove until Python-packaged SQLite supports
+    # column removal across all supported Python versions
+    external_jobs_json: Optional[List[Dict[str, Any]]] = Column(
+        types.JSON(), nullable=True
+    )  # DEPRECATED
+
     container_image_uri: Optional[str] = Column(types.String(), nullable=True)
 
     # Lifecycle timestamps
@@ -138,7 +150,7 @@ class Run(HasUserMixin, Base, JSONEncodableMixin):
     resource_requirements_json: Optional[str] = Column(
         types.JSON(), nullable=True, info={JSON_KEY: True}
     )
-    cache_key: Optional[str] = Column(types.String(), nullable=True)
+    cache_key: Optional[str] = Column(types.String(), nullable=True, index=True)
 
     # Relationships
     root_run: "Run" = relationship("Run", remote_side=[id], lazy="select")

@@ -2,7 +2,7 @@
 import datetime
 
 # Third-party
-from sqlalchemy import Column, ForeignKey, types
+from sqlalchemy import Column, ForeignKey, types, Index
 
 # Sematic
 from sematic.db.models.base import Base
@@ -27,6 +27,10 @@ class MetricValue(Base):
     """
 
     __tablename__ = "metric_values"
+    #__table_args__ = (
+    #    Index("metric_values_id_time_idx", MetricValue.c.metric_id, MetricValue.c.metric_time.desc()),
+    #    Index("metric_values_time_idx", MetricValue.c.metric_time.desc())
+    #)
 
     metric_id: str = Column(
         types.String(),
@@ -41,3 +45,6 @@ class MetricValue(Base):
     created_at: datetime.datetime = Column(
         types.DateTime(), nullable=False, default=datetime.datetime.utcnow
     )
+
+Index("metric_values_id_time_idx", MetricValue.metric_id, MetricValue.metric_time.desc()),
+Index("metric_values_time_idx", MetricValue.metric_time.desc())

@@ -19,10 +19,10 @@ import dataclasses
 import json
 import logging
 from enum import Enum, unique
-from typing import Dict, FrozenSet, Optional, Union
+from typing import Any, Dict, FrozenSet, List, Optional, Union
 
 # Third-party
-from sqlalchemy import Column, types
+from sqlalchemy import Column, ForeignKey, types
 from sqlalchemy.orm import validates
 
 # Sematic
@@ -192,6 +192,7 @@ class Resolution(HasUserMixin, Base, JSONEncodableMixin):
 
     root_id: str = Column(
         types.String(),
+        ForeignKey("runs.id"),
         nullable=False,
         primary_key=True,
     )
@@ -211,6 +212,13 @@ class Resolution(HasUserMixin, Base, JSONEncodableMixin):
     settings_env_vars: Dict[str, str] = Column(
         types.JSON(), nullable=False, default=lambda: {}, info={REDACTED_KEY: True}
     )
+
+    # WARNING: deprecated column, do not remove until Python-packaged SQLite supports
+    # column removal across all supported Python versions
+    external_jobs_json: Optional[List[Dict[str, Any]]] = Column(
+        types.JSON(), nullable=True
+    )  # DEPRECATED
+
     container_image_uris: Optional[Dict[str, str]] = Column(types.JSON(), nullable=True)
     container_image_uri: Optional[str] = Column(types.String(), nullable=True)
     client_version: Optional[str] = Column(types.String(), nullable=True)
