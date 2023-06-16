@@ -3,7 +3,6 @@
 UPDATE runs SET function_path = '' WHERE function_path IS NULL;
 
 ALTER TABLE artifacts ALTER COLUMN type_serialization SET NOT NULL;
-ALTER TABLE edges ALTER COLUMN artifact_id SET NOT NULL;
 ALTER TABLE jobs ALTER COLUMN created_at SET NOT NULL;
 ALTER TABLE jobs ALTER COLUMN updated_at SET NOT NULL;
 ALTER TABLE notes ALTER COLUMN created_at SET NOT NULL;
