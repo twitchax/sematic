@@ -27,10 +27,6 @@ class MetricValue(Base):
     """
 
     __tablename__ = "metric_values"
-    #__table_args__ = (
-    #    Index("metric_values_id_time_idx", MetricValue.c.metric_id, MetricValue.c.metric_time.desc()),
-    #    Index("metric_values_time_idx", MetricValue.c.metric_time.desc())
-    #)
 
     metric_id: str = Column(
         types.String(),
