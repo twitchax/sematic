@@ -22,6 +22,7 @@ from sematic.db.models.factories import make_personal_organization
 from sematic.db.models.job import Job
 from sematic.db.models.note import Note
 from sematic.db.models.organization import Organization
+from sematic.db.models.organization_user import OrganizationUser
 from sematic.db.models.resolution import Resolution, ResolutionStatus
 from sematic.db.models.run import Run
 from sematic.db.models.runs_external_resource import RunExternalResource
@@ -907,10 +908,23 @@ def save_user(user: User) -> User:
         session.refresh(user)
 
         # also ensure the user is a member of their own personal organization
-        organization, organization_user = make_personal_organization(user=user)
+        row = (
+            session.query(OrganizationUser)
+            .join(User, User.id == OrganizationUser.user_id)
+            .join(Organization, OrganizationUser.organization_id == Organization.id)
+            .one_or_none()
+        )
 
-        session.add(organization)
-        session.add(organization_user)
+        if row is None:
+            organization, organization_user = make_personal_organization(user=user)
+            session.add(organization)
+            session.add(organization_user)
+
         session.commit()
+
+        # re-refresh after committing in order to eagerly load attributes
+        # omitting to do this would result in an error whenever accessing any
+        # attributes which hadn't been effectively loaded
+        session.refresh(user)
 
     return user
