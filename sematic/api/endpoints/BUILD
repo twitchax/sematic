@@ -17,6 +17,7 @@ sematic_py_lib(
         "//sematic/db:queries",
         "//sematic/db/models:artifact",
         "//sematic/db/models:edge",
+        "//sematic/db/models:organization",
         "//sematic/db/models:resolution",
         "//sematic/db/models:run",
         "//sematic/db/models:user",
@@ -38,6 +39,7 @@ sematic_py_lib(
         ":auth",
         "//sematic:api_client",
         "//sematic/api:app",
+        "//sematic/db/models:organization",
         "//sematic/db/models:user",
     ],
 )
@@ -53,6 +55,7 @@ sematic_py_lib(
         "//sematic/api/endpoints:auth",
         "//sematic/api/endpoints:request_parameters",
         "//sematic/db/models:external_resource",
+        "//sematic/db/models:organization",
         "//sematic/db/models:user",
         "//sematic/db:queries",
 
@@ -76,6 +79,7 @@ sematic_py_lib(
         ":request_parameters",
         "//sematic/api:app",
         "//sematic/db:queries",
+        "//sematic/db/models:organization",
         "//sematic/db/models:resolution",
         "//sematic/db/models:user",
     ],
@@ -95,6 +99,7 @@ sematic_py_lib(
         "//sematic/db:db",
         "//sematic/db:queries",
         "//sematic/db/models:artifact",
+        "//sematic/db/models:organization",
         "//sematic/db/models:user",
     ],
 )
@@ -139,6 +144,8 @@ sematic_py_lib(
         "//sematic/api:app",
         "//sematic/config:server_settings",
         "//sematic/config:settings",
+        "//sematic/db/models:organization",
+        "//sematic/db/models:user",
     ],
 )
 
@@ -158,6 +165,7 @@ sematic_py_lib(
         "//sematic/db:db",
         "//sematic/db:queries",
         "//sematic/db/models:note",
+        "//sematic/db/models:organization",
         "//sematic/db/models:run",
         "//sematic/db/models:user",
     ],
@@ -193,6 +201,7 @@ sematic_py_lib(
         ":auth",
         ":request_parameters",
         "//sematic/api:app",
+        "//sematic/db/models:organization",
         "//sematic/db/models:user",
         "//sematic/plugins:abstract_storage",
         "//sematic/plugins/storage:local_storage",
@@ -218,6 +227,7 @@ sematic_py_lib(
         "//sematic/api:app",
         "//sematic/api/endpoints:auth",
         "//sematic/api/endpoints:request_parameters",
+        "//sematic/db/models:organization",
         "//sematic/db/models:run",
         "//sematic/db/models:user",
         "//sematic/metrics:func_effective_runtime_metric",
@@ -250,6 +260,7 @@ sematic_py_lib(
         "//sematic/api:app",
         "//sematic/api/endpoints:auth",
         "//sematic/db:queries",
+        "//sematic/db/models:organization",
         "//sematic/db/models:user",
     ],
 )
@@ -264,6 +275,7 @@ sematic_py_lib(
         "//sematic/api/endpoints:request_parameters",
         "//sematic/db:db",
         "//sematic/db:queries",
+        "//sematic/db/models:organization",
         "//sematic/db/models:organization_user",
         "//sematic/db/models:user",
     ],
