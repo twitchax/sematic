@@ -658,7 +658,7 @@ def test_save_user(
         assert len(organizations) == 1
         assert organizations[0].id == users[0].id
         assert organizations[0].name == users[0].email
-        assert organizations[0].namespace is None
+        assert organizations[0].kubernetes_namespace is None
 
         organizations_users = session.query(OrganizationUser).all()
         assert len(organizations_users) == 1

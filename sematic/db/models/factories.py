@@ -300,7 +300,7 @@ def make_personal_organization(user: User) -> Tuple[Organization, OrganizationUs
 
     The user is expected to have an `id` field, meaning the entry was flushed to the DB.
     """
-    organization = Organization(id=user.id, name=user.email, namespace=None)
+    organization = Organization(id=user.id, name=user.email, kubernetes_namespace=None)
     organization_user = OrganizationUser(
         organization_id=organization.id, user_id=user.id, admin=True
     )

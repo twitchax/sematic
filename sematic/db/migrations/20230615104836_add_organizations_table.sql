@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS organizations (
     id character(32) NOT NULL,
     name TEXT NOT NULL,
-    namespace TEXT,
+    kubernetes_namespace TEXT,
     created_at TIMESTAMP WITH time zone NOT NULL,
     updated_at TIMESTAMP WITH time zone NOT NULL,
 
@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS organizations_users (
     FOREIGN KEY(user_id) REFERENCES users (id)
 );
 
-INSERT INTO organizations (id, name, namespace, created_at, updated_at)
-SELECT id, email, NULL, created_at, created_at
+INSERT INTO organizations (id, name, kubernetes_namespace, created_at, updated_at)
+SELECT id, COALESCE(first_name || ' ' || last_name, first_name, last_name, email), NULL, created_at, created_at
 FROM users;
 
 INSERT INTO organizations_users (organization_id, user_id, admin, created_at, updated_at)

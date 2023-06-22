@@ -15,9 +15,9 @@ from sematic.db.tests.fixtures import test_db  # noqa: F401
 @pytest.fixture
 def org_fixtures(test_db: DB):  # noqa: F811
     orgs = [
-        Organization(id="0", name="DS", namespace="ds"),
-        Organization(id="1", name="Eng", namespace="eng"),
-        Organization(id="2", name="HR", namespace=None),
+        Organization(id="0", name="DS", kubernetes_namespace="ds"),
+        Organization(id="1", name="Eng", kubernetes_namespace="eng"),
+        Organization(id="2", name="HR", kubernetes_namespace=None),
     ]
 
     with test_db.get_session() as session:
@@ -40,12 +40,12 @@ def test_list_organizations(
 
     assert orgs[0]["id"] == "0"
     assert orgs[0]["name"] == "DS"
-    assert orgs[0]["namespace"] == "ds"
+    assert orgs[0]["kubernetes_namespace"] == "ds"
 
     assert orgs[1]["id"] == "1"
     assert orgs[1]["name"] == "Eng"
-    assert orgs[1]["namespace"] == "eng"
+    assert orgs[1]["kubernetes_namespace"] == "eng"
 
     assert orgs[2]["id"] == "2"
     assert orgs[2]["name"] == "HR"
-    assert orgs[2]["namespace"] is None
+    assert orgs[2]["kubernetes_namespace"] is None

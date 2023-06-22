@@ -133,7 +133,7 @@ CREATE INDEX metric_values_time_idx ON metric_values(metric_time DESC);
 CREATE TABLE organizations (
     id character(32) NOT NULL,
     name TEXT NOT NULL,
-    namespace TEXT,
+    kubernetes_namespace TEXT,
     created_at TIMESTAMP WITH time zone NOT NULL,
     updated_at TIMESTAMP WITH time zone NOT NULL,
 

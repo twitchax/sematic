@@ -38,6 +38,7 @@ def list_organizations_users_endpoint(user: Optional[User]) -> flask.Response:
     with db().get_session() as session:
         query = session.query(OrganizationUser)
 
+        # TODO: restrict to orgs that only the user has access to
         if sql_predicates is not None:
             query = query.filter(sql_predicates)
 

@@ -21,9 +21,9 @@ class Organization(Base, JSONEncodableMixin):
         The ID of the organization. Defaults to a random UUID.
     name: str
         A human-readable name for the Organization.
-    namespace: Optional[str]
-        The namespace in which this Organization can submit workloads. Defaults to `None`,
-        meaning the Server namespace.
+    kubernetes_namespace: Optional[str]
+        The Kubernetes namespace in which this Organization can submit workloads. Defaults
+        to `None`, meaning the Server namespace.
     created_at: datetime.datetime
         The creation time. Defaults to the current time.
     updated_at: datetime.datetime
@@ -34,7 +34,7 @@ class Organization(Base, JSONEncodableMixin):
 
     id: str = Column(types.String(), primary_key=True, default=lambda: uuid.uuid4().hex)
     name: str = Column(types.String(), nullable=False)
-    namespace: Optional[str] = Column(types.String())
+    kubernetes_namespace: Optional[str] = Column(types.String())
 
     # Lifecycle timestamps
     created_at: datetime.datetime = Column(

@@ -17,6 +17,7 @@ def list_organizations_endpoint(user: Optional[User]) -> flask.Response:
     """
     Retrieve the list of organizations.
     """
+    # TODO: restrict to orgs that only the user has access to
     organizations = get_organizations()
 
     payload = [organization.to_json_encodable() for organization in organizations]
