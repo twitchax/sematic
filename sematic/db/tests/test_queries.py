@@ -551,7 +551,7 @@ def test_save_read_jobs(test_db):  # noqa: F811
 
     with pytest.raises(
         IllegalStateTransitionError,
-        match=(r"Tried to update status from .* to .*, " r"but the latter was older"),
+        match=r"Tried to update status from .* to .*, but the latter was older",
     ):
         save_job(retry_job_from_scratch)
 
@@ -636,13 +636,14 @@ def test_get_resolution_ids_with_orphaned_jobs(test_db):  # noqa: F811
 def test_save_user(
     test_db: DB,  # noqa: F811
 ):
-    user = make_user(
+    # save the first user
+    user1 = make_user(
         email="elvis@graceland.com",
         first_name="Elvis",
         last_name="Presley",
         avatar_url="https://?:",
     )
-    save_user(user)
+    save_user(user1)
 
     with test_db.get_session() as session:
         users = session.query(User).all()
@@ -657,7 +658,7 @@ def test_save_user(
         organizations = session.query(Organization).all()
         assert len(organizations) == 1
         assert organizations[0].id == users[0].id
-        assert organizations[0].name == users[0].email
+        assert organizations[0].name == "Elvis Presley"
         assert organizations[0].kubernetes_namespace is None
 
         organizations_users = session.query(OrganizationUser).all()
@@ -665,3 +666,47 @@ def test_save_user(
         assert organizations_users[0].organization_id == organizations[0].id
         assert organizations_users[0].user_id == users[0].id
         assert organizations_users[0].admin is True
+
+    # save the second user
+    user2 = make_user(
+        email="michael@wonderland.com",
+        first_name="Michael",
+        last_name="Jackson",
+        avatar_url="https://B)",
+    )
+    save_user(user2)
+
+    with test_db.get_session() as session:
+        users = session.query(User).all()
+        assert len(users) == 2
+        assert users[1].id is not None
+        assert users[1].email == "michael@wonderland.com"
+        assert users[1].first_name == "Michael"
+        assert users[1].last_name == "Jackson"
+        assert users[1].avatar_url == "https://B)"
+        assert users[1].api_key is not None
+
+        organizations = session.query(Organization).all()
+        assert len(organizations) == 2
+        assert organizations[1].id == users[1].id
+        assert organizations[1].name == "Michael Jackson"
+        assert organizations[1].kubernetes_namespace is None
+
+        organizations_users = session.query(OrganizationUser).all()
+        assert len(organizations_users) == 2
+        assert organizations_users[1].organization_id == organizations[1].id
+        assert organizations_users[1].user_id == users[1].id
+        assert organizations_users[1].admin is True
+
+    # save the first user again
+    save_user(user1)
+
+    with test_db.get_session() as session:
+        users = session.query(User).all()
+        assert len(users) == 2
+
+        organizations = session.query(Organization).all()
+        assert len(organizations) == 2
+
+        organizations_users = session.query(OrganizationUser).all()
+        assert len(organizations_users) == 2

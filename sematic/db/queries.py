@@ -902,6 +902,7 @@ def save_user(user: User) -> User:
     Save a user to the DB, together with a personal organization.
     """
     with db().get_session() as session:
+        logger.debug("Saving user '%s'", user.email)
         session.add(user)
         # flush & refresh to get autoinc id
         session.flush()
@@ -910,12 +911,13 @@ def save_user(user: User) -> User:
         # also ensure the user is a member of their own personal organization
         row = (
             session.query(OrganizationUser)
-            .join(User, User.id == OrganizationUser.user_id)
+            .filter(OrganizationUser.user_id == user.id)
             .join(Organization, OrganizationUser.organization_id == Organization.id)
             .one_or_none()
         )
 
         if row is None:
+            logger.debug("Creating personal org for user '%s'", user.email)
             organization, organization_user = make_personal_organization(user=user)
             session.add(organization)
             session.add(organization_user)
