@@ -16,12 +16,21 @@ from transformers import (
 from transformers import TrainingArguments as HfTrainingArguments
 
 # Sematic
-from sematic.ee.metrics import MetricScope, log_metric
+# Metrics logging is only available for Sematic ee users.
+# from sematic.ee.metrics import MetricScope, log_metric
 from sematic.types import (
     HuggingFaceDatasetReference,
     HuggingFaceModelReference,
     PromptResponse,
 )
+
+
+def log_metric(name, value):
+    """Stand-in for Sematic's `log_metric` that prints to stdout.
+
+    Sematic's log_metric is only available for EE users.
+    """
+    print(f"Metric '{name}': {value}")
 
 
 class LogMetricsCallback(TrainerCallback):

@@ -1,12 +1,10 @@
 # Standard Library
-import os
 from dataclasses import dataclass
 from typing import Optional, Tuple
 
 # Third-party
 from datasets import Dataset
-from peft import PeftModel
-from transformers import AutoModelForSeq2SeqLM, PreTrainedTokenizerBase
+from transformers import PreTrainedTokenizerBase
 
 # Sematic
 import sematic
